@@ -5,3 +5,71 @@ requires = [
   "typing_extensions",
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlx"
+dynamic = ["version", "readme"]
+description = "A framework for machine learning on Apple silicon."
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "MLX Contributors", email = "mlx@group.apple.com" },
+]
+
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/ml-explore/mlx"
+Repository = "https://github.com/ml-explore/mlx"
+
+[project.scripts]
+"mlx.launch" = "mlx._distributed_utils.launch:main"
+"mlx.distributed_config" = "mlx._distributed_utils.config:main"
+
+[project.optional-dependencies]
+dev = [
+  "ml_dtypes",
+  "numpy>=2",
+  "pre-commit",
+  "psutil",
+  "torch>=2.9",
+  "typing_extensions",
+]
+
+cuda12 = [
+  "nvidia-cublas-cu12==12.9.*; platform_system == 'Linux'",
+  "nvidia-cuda-nvrtc-cu12==12.9.*; platform_system == 'Linux'",
+  "nvidia-cudnn-cu12==9.*; platform_system == 'Linux'",
+  "nvidia-nccl-cu12; platform_system == 'Linux'",
+]
+
+cuda13 = [
+  "nvidia-cublas; platform_system == 'Linux'",
+  "nvidia-cuda-nvrtc; platform_system == 'Linux'",
+  "nvidia-cudnn-cu13==9.*; platform_system == 'Linux'",
+  "nvidia-nccl-cu13; platform_system == 'Linux'",
+]
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+package-dir = { "" = "python" }
+
+[tool.setuptools.dynamic]
+readme = { file = "README.md", content-type = "text/markdown" }
+
+[tool.setuptools.packages.find]
+where = ["python"]
+exclude = [
+  "src",
+  "tests",
+  "scripts",
+  "mlx.lib",
+  "mlx.include",
+  "mlx.share",
+  "mlx.share.*",
+  "mlx.include.*",
+]
+
+[tool.setuptools.package-data]
+"mlx.core" = ["*.pyi"]
